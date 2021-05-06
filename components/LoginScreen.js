@@ -9,20 +9,15 @@ const requestHeader = {
   'Content-Type': 'application/json'
 }
 
-export default function LoginScreen({ navigation }) {
-
+export default function LoginScreen() {
   const { signIn } = React.useContext(AuthContext);
 
   const responseFacebook = async (response) => {
     try {
-      const { name, id, picture, email } = response;
+      const { accessToken } = response;
 
       const requestData = {
-        uid: id,
-        fullName: name,
-        avatarUrl: picture.data.url,
-        email: email,
-        provider: 'facebook'
+        token: accessToken
       }
 
       const apiResponse = await fetch(Constants.manifest.extra.API_ENDPOINT + '/auth/facebook', {
@@ -46,7 +41,6 @@ export default function LoginScreen({ navigation }) {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <FacebookLogin
         appId={Constants.manifest.extra.FACEBOOK_APP_ID}
-        fields="name,email,picture"
         callback={responseFacebook} />
     </View>
   );
