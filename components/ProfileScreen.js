@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, Button } from 'react-native';
 import Constants from 'expo-constants';
 import { AuthContext } from '../App';
+import { requestHeader } from '../.expo-shared/request-header';
 
 export default function ProfileScreen() {
   const [userData, setUserData] = useState(null);
@@ -14,15 +15,10 @@ export default function ProfileScreen() {
       const meResponse = await fetch(
         Constants.manifest.extra.API_ENDPOINT + '/users/me', {
           method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': token
-          }
+          headers: { ...requestHeader, 'Authorization': token }
       })
 
       const userData = await meResponse.json();
-
       setUserData(userData.data);
     }
 
@@ -35,12 +31,12 @@ export default function ProfileScreen() {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Hello { userData.fullName }</Text>
+      <Text style={styles.helloTitle}>Hello { userData.fullName }</Text>
       <Image
         style={styles.logo}
         source={userData.avatarUrl}
       />
-      <Text>Email: { userData.email }</Text>
+      <Text style={styles.emailText}>Email: { userData.email }</Text>
 
       <Button
         onPress={signOut}
@@ -55,6 +51,12 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
+  },
+  helloTitle: {
+    marginBottom: 15,
+  },
+  emailText: {
+    margin: 15,
   },
   logo: {
     width: 100,

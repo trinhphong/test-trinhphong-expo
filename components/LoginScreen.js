@@ -3,11 +3,7 @@ import { View } from 'react-native';
 import FacebookLogin from 'react-facebook-login';
 import Constants from 'expo-constants';
 import { AuthContext } from '../App';
-
-const requestHeader = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
-}
+import { requestHeader } from '../.expo-shared/request-header'
 
 export default function LoginScreen() {
   const { signIn } = React.useContext(AuthContext);
